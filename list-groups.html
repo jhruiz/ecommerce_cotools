@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="assets/images/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Cotools | Colombiana de herramientas</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/list-groups/groups.css">
+
+  </head>
+
+  <body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>  
+    <!-- ***** Preloader End ***** -->
+
+    <!-- Header -->
+    <header class="">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html"><h2>Co<em>tools</em></h2></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Inicio
+                      <span class="sr-only">(current)</span>
+                    </a>
+                </li>               
+                <li class="nav-item"><a class="nav-link" href="about-us.html">Sobre Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+                <li class="nav-item pedidos"><a class="nav-link" href="my-orders.html">Mis pedidos</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+
+    <!-- /////// -->
+    <!-- Page Content -->
+    <div class="" style="">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-content">
+              <!-- <h4>Lorem ipsum dolor</h4>
+              <h2>Contact Us</h2> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- /////////////////////////// -->
+    <div class="products" style="margin-top: 100px;">      
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-md-12" style="margin-bottom: 15px;">
+            <i class="fa fa-home fa-lg"></i>
+            <span id="catSelec"></span>
+            <span id="gruSelec"></span>
+          </div>
+
+        </div>
+        
+        <div class="row">
+
+          <div class="col-md-3">
+            <h4> Categorías </h4>
+            <div class="list-group" id="listaCat" style="margin-top: 10px;"></div>
+          </div>
+
+          <div class="col-md-9">
+
+            <h4> Grupos </h4>
+            <div class="dropdown-divider"></div>
+            <div class="container">
+              <div class="row" id="grd_grupos"></div>            
+            </div>
+
+          </div>
+        </div>
+      </div>  
+
+      <!-- <div class="products"> -->
+      <div class="container" style="margin-top: 15px;">
+        <div class="row">
+
+          <div class="col-md-12">
+            <h4> Productos </h4>
+
+            <div class="col-md-12 text-center spinner-products" style="display: none; color: rgb(253, 139, 41);">
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+              <span class="sr-only">Loading...</span>   
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+              <span class="sr-only">Loading...</span>     
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+              <span class="sr-only">Loading...</span>                                
+            </div>
+
+            <div class="dropdown-divider"></div>
+            <div class="row" id="grd_items_grupos"></div>
+          </div>
+
+        </div>
+      </div>
+      <!-- </div>    -->
+    </div> 
+    
+    <div class="modal fade" id="formAgregarItem" tabindex="-1" role="dialog" aria-labelledby="formAgregarItemLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="formAgregarItemLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-5">
+                  <div id="ppal_image"></div>
+                </div>                
+                <div class="form-group col-md-7">
+                  <strong id="referencia"></strong><br>                              
+                  <strong id="unidadFactor"></strong>                
+                  <div id="delPrice"></div>
+                  <p class="lead">
+                    <strong class="text-primary" id="precioPpal"></strong>
+                  </p>
+
+                  <label for="recipient-name" class="col-form-label">Cantidad:</label>
+                  <input type="text" class="form-control" val="" id="uniFactor" style="color: #c0bcbc;" onblur="restaurarUniFactor()" pattern="[0-9]+" onkeyup="validarNumeros()">
+                  <input type="hidden" class="form-control" val="" id="uniFactorHid">
+                  <input type="hidden" class="form-control" val="" id="codHid">
+                  <input type="hidden" class="form-control" val="" id="descHid">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="salvarAlCarrito()">Agregar al carrito <i class="fa fa-shopping-cart fa-lg"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="inner-content">
+              <p>Copyright © 2021 Cotools - Colombiana de herramientas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>  
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+
+
+    <!-- Additional Scripts -->
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/owl.js"></script>
+    <script src="assets/js/vallogin.js"></script>
+    <script src="assets/js/categories/categories.js"></script>
+    <script src="assets/js/carrito/carrito.js"></script>
+  </body>
+
+</html>

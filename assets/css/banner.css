@@ -1,0 +1,40 @@
+div#text_1_banner { 
+    width: 0px; 
+    text-transform: uppercase;
+    white-space: nowrap; 
+    overflow: hidden;  
+}
+
+div#text_2_banner { 
+    padding-left: 20px;
+    width: 0px; 
+    white-space: nowrap; 
+    overflow: hidden;  
+    margin-top: 40px;
+}
+
+div#text_3_banner { 
+    width: 0px; 
+    text-transform: uppercase;
+    white-space: nowrap; 
+}
+
+div#text_4_banner { 
+    padding-left: 20px;
+    width: 0px; 
+    white-space: nowrap; 
+    margin-top: 40px;
+}
+
+div#text_5_banner { 
+    width: 0px; 
+    text-transform: uppercase;
+    white-space: nowrap; 
+}
+
+div#text_6_banner { 
+    padding-left: 20px;
+    width: 0px; 
+    white-space: nowrap; 
+    margin-top: 40px;
+}

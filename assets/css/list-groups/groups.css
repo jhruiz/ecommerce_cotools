@@ -1,0 +1,17 @@
+.button-group {
+    background-color: rgb(253, 139, 41);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 10px;
+    border-radius: 5px;
+  }
+
+  .active-pos {
+    font-weight: bold;
+  }
