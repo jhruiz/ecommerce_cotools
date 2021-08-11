@@ -2,7 +2,7 @@ var pagActual = "1";
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlEC = 'https://cotools.co/';
-var cantItems = 48;
+var cantItems = 28;
 var cantidadItems = 0;
 
 /**
@@ -373,7 +373,6 @@ var paginador = function() {
 
     // Valida que la pagina no se encuentre entre las 5 finales
     if(parseInt(pagActual) >= ((parseInt(cantPag) - parseInt(cantVisible))+1)) {
-        
         pagHtml = '<li><a href="#" onclick="previusPage()"><i class="fa fa-angle-double-left"></i></a></li>';    
         pagHtml += '<li class="li_paginate" id="li_1"><a href="#" onclick="changePag(this)" id="apg_1">1</a></li>';        
         pagHtml += '<li class="li_paginate"><a href="#">...</a></li>';
