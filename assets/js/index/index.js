@@ -2,7 +2,7 @@ var pagActual = "1";
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlEC = 'https://cotools.co/';
-var cantItems = 15;
+var cantItems = 20;
 var cantidadItems = 0;
 
 /**
@@ -262,8 +262,10 @@ var generarVistaImagenes = function(data) {
  * @param {*} pag 
  */
 var getImages = function(pag) {
-    $('#prods_availables').html("");
+    
     $('.spinner-products').show();
+    $('#prods_availables').html('');
+
     if(pag == ""){
         pag = 1;
     }
