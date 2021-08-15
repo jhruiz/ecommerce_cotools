@@ -72,6 +72,7 @@ var salvarAlCarrito = function(data) {
                 success: function(respuesta) {
         
                     if ( respuesta.estado ) {
+                        agregarItemMenu();
                         bootbox.alert('Producto agregado al carrito de compras.');
                     } else {
                         bootbox.alert(respuesta.mensaje);

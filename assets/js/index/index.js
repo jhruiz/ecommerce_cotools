@@ -254,7 +254,7 @@ var generarVistaImagenes = function(data) {
         listPdrHtml += '</div>';
         listPdrHtml += '</div>';
     });
-    // $('.spinner-products').hide();
+    $('.spinner-products').hide();
     $('#prods_availables').html(listPdrHtml);
 }
 
@@ -263,6 +263,9 @@ var generarVistaImagenes = function(data) {
  * @param {*} pag 
  */
 var getImages = function(pag) {
+
+    $('#prods_availables').html('');
+    $('.spinner-products').show();
 
     if(pag == ""){
         pag = 1;
@@ -273,12 +276,13 @@ var getImages = function(pag) {
         method: "GET",
         url: urlC + "get-items",
         data: { pagina: pag, cantidad: cantItems },
-        async: false,
+        async: true,
         success: function(respuesta) {            
 
             if ( respuesta.estado ) {
                 generarVistaImagenes(respuesta.data); 
-                cantidadItems = respuesta.cantidad;                               
+                cantidadItems = respuesta.cantidad;  
+                paginador();                             
             } else {
                 alert('no fue posible obtener los productos.')                
             }
@@ -293,7 +297,7 @@ var getImages = function(pag) {
 /**
  * Cambia a la anterior pagina basado en la actual
  */
-function previusPage() {    
+function previusPage() {       
     $('.li_paginate').removeClass("active");
     pagActual = parseInt(pagActual) - 1;
 
@@ -427,7 +431,6 @@ function buscarProductos() {
             success: function(respuesta) {
     
                 if ( respuesta.estado ) {
-                    $('#ul_paginator').html("");
                     generarVistaImagenes(respuesta.data);                    
                 } else {
                     bootbox.alert('no fue posible obtener los productos.')                
@@ -446,5 +449,4 @@ function buscarProductos() {
 
 $( document ).ready(function() {  
     getImages(pagActual);   
-    paginador(); 
 });
