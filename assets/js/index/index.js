@@ -2,7 +2,7 @@ var pagActual = "1";
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlEC = 'https://cotools.co/';
-var cantItems = 28 ;
+var cantItems = 5;
 var cantidadItems = 0;
 
 /**
