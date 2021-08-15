@@ -253,7 +253,7 @@ var generarVistaImagenes = function(data) {
         listPdrHtml += '</div>';
         listPdrHtml += '</div>';
     });
-
+    $('.spinner-products').hide();
     $('#prods_availables').html(listPdrHtml);
 }
 
@@ -262,6 +262,7 @@ var generarVistaImagenes = function(data) {
  * @param {*} pag 
  */
 var getImages = function(pag) {
+    $('.spinner-products').show();
     if(pag == ""){
         pag = 1;
     }
