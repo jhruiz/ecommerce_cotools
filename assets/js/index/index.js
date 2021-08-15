@@ -262,6 +262,7 @@ var generarVistaImagenes = function(data) {
  * @param {*} pag 
  */
 var getImages = function(pag) {
+    $('#prods_availables').html("");
     $('.spinner-products').show();
     if(pag == ""){
         pag = 1;
