@@ -206,7 +206,8 @@ var leaveCar = function(data) {
  * @param {*} data 
  */
 var generarVistaImagenes = function(data) {
-    $('.spinner-products').hide();
+
+    $('#prods_availables').html('');
 
     var listPdrHtml = "";
 
@@ -253,7 +254,7 @@ var generarVistaImagenes = function(data) {
         listPdrHtml += '</div>';
         listPdrHtml += '</div>';
     });
-    $('.spinner-products').hide();
+    // $('.spinner-products').hide();
     $('#prods_availables').html(listPdrHtml);
 }
 
@@ -262,9 +263,6 @@ var generarVistaImagenes = function(data) {
  * @param {*} pag 
  */
 var getImages = function(pag) {
-    
-    $('.spinner-products').show();
-    $('#prods_availables').html('');
 
     if(pag == ""){
         pag = 1;
@@ -276,7 +274,7 @@ var getImages = function(pag) {
         url: urlC + "get-items",
         data: { pagina: pag, cantidad: cantItems },
         async: false,
-        success: function(respuesta) {
+        success: function(respuesta) {            
 
             if ( respuesta.estado ) {
                 generarVistaImagenes(respuesta.data); 
