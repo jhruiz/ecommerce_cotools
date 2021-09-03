@@ -295,7 +295,7 @@ var getImages = function(pag) {
     $.ajax({
         method: "GET",
         url: urlC + "get-items",
-        data: { pagina: pag, cantidad: cantItems },
+        data: { pagina: pag, cantidad: cantItems, cantidadItems: cantidadItems },
         async: true,
         success: function(respuesta) {            
 
