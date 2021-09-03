@@ -1,6 +1,9 @@
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlD = 'https://dataxback.cotools.co/public/';
+// var urlImg = 'http://localhost:85/dist/img/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlD = 'http://localhost:85/dataxback/';
 
 /**
  * Modifica la cantidad solicitada de un item específico

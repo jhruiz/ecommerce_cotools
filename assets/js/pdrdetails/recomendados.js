@@ -1,5 +1,7 @@
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
+// var urlImg = 'http://localhost:85/dist/img/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
 
 /**
  * Valida que el campo sea numérico
@@ -56,6 +58,7 @@ function restaurarUniFactorDetalle() {
     var img = obtenerImagenProducto(data.imagenes);
 
     $('#formAgregarItemLabel').html( data.descrip );
+    $('#codModal').html('Código ' + data.cod_item);
     $('#referenciaModal').html('Referencia ' + data.referencia);
     $('#unidadFactorModal').html('Unidades por empaque ' + data.uni_factor);
     $('#uniFactorHidModal').val(data.uni_factor);

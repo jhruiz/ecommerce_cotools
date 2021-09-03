@@ -1,6 +1,9 @@
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlEC = 'https://cotools.co/';
+// var urlImg = 'http://localhost:85/dist/img/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlEC = 'http://localhost:85/ecommerce_cotools/';
 
 /**
  * Valida que el campo sea numérico
@@ -252,6 +255,7 @@ var agregarInformacionItemPpal = function(detalles) {
     // Nombre del producto
     $('#tituloPpal').html(detalles.descrip);
 
+    $('#codItem').html('Código ' + detalles.cod_item);
     $('#referencia').html('Referencia ' + detalles.referencia);
     $('#unidadFactor').html('Unidades por empaque ' + detalles.uni_factor);
 
@@ -320,12 +324,14 @@ var agregarItemsPorGrupo = function(grupo) {
         // Se obtiene el valor de venta del producto formateado
         var valPdr = obtenerPrecioProducto(valor, ivaInc);
 
+        var codRef = '<br><p>Cod ' + element.cod_item + '. Ref ' + element.referencia +  '</p>';
+
         // Se crea el html de los productos relacionados por grupo
         gruposHtml += '<div class="col-md-3">';
         gruposHtml += '<div class="product-item">';
         gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descrip + '" width="215" height="170"></a>';
         gruposHtml += '<div class="down-content">';
-        gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip + '</h4></a>';
+        gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip +codRef + '</h4></a>';
         gruposHtml += valNoList + '<h6>' + valPdr + '</h6>';
         gruposHtml += '<p title="' + element.itm_extens + '">' + descExt + '</p>';
         gruposHtml += '<div class="text-right"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.cod_item + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarritoDesdeGrupo(this)"></i></div>';
@@ -399,8 +405,10 @@ var generarVistaDetalladaItem = function(data) {
     agregarImagenPrincipal(data.data.principal.imagenes);
 
     // Se agregan las imagenes secundarias
-    if(data.data.principal.imagenes != null){
+    if( data.data.principal.imagenes != null ){
         agregarImagenesSecundarias(data.data.principal.imagenes);
+    } else {
+        $('#sec_images').html('');
     }
      
     // Se agrega información detallada del producto
@@ -443,7 +451,53 @@ var obtenerInfoDetalladaProducto = function() {
     }      
 }
 
+var putLoaders = function( cant = 3, cantGrp = 8 ) {
+
+    // Se crean los loaders para las imagenes secundarias
+    var detailHtml = "";
+    for( var i = 0; i < cant; i++ ){
+        
+        detailHtml += '<div>';
+        detailHtml += '<div class="cont_img_ppal2">';
+        detailHtml += '<img src="assets/images/empty.jpg" class="img-fluid" width="100" height="79">';
+        detailHtml += '<div class="centrado2"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></div>';
+        detailHtml += '</div>';
+        detailHtml += '<br>';
+        detailHtml += '</div>';
+
+    }
+
+    $('#sec_images').html(detailHtml);    
+
+    // Se crea el loader para la imagen principal
+    var detailHtml = "";
+    detailHtml += '<div class="cont_img_ppal"><img src="assets/images/empty.jpg" class="img-fluid " width="450" height="355"/>';
+    detailHtml += '<div class="centrado"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div></div>'
+    $('#ppal_image').html(detailHtml);
+
+    // Se crea el loader para la seccion de productos de interes
+    var gruposHtml = "";    
+
+    for( var i = 0; i < cantGrp; i++) {       
+
+        gruposHtml += '<div class="col-md-3">';
+        gruposHtml += '<div class="product-item">';
+        gruposHtml += '<div style="position: relative">';
+        gruposHtml += '<a href="#"><img src="assets/images/empty.jpg" width="215" height="170"></a>';                
+        gruposHtml += '</div>';
+        gruposHtml += '<div class="down-content text-center">';
+        gruposHtml += '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>';
+        gruposHtml += '</div>';        
+        gruposHtml += '</div>';
+        gruposHtml += '</div>';    
+    }
+  
+    $('#imgGrupos').html(gruposHtml);
+
+}
+
 
 $( document ).ready(function() {
+    putLoaders(3, 8);
     obtenerInfoDetalladaProducto();
 });

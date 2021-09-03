@@ -1,6 +1,9 @@
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlEC = 'https://cotools.co/';
+// var urlImg = 'http://localhost:85/dist/img/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlEC = 'http://localhost:85/ecommerce_cotools/';
 
 /**
  * Redirecciona a la pagina de detalles del producto y guarda en sesion el id de producto
@@ -43,6 +46,7 @@ var urlEC = 'https://cotools.co/';
     var img = obtenerImagenProducto(data.imagenes);
 
     $('#formAgregarItemLabel').html( data.descrip );
+    $('#itmCodigo').html('Código ' + data.cod_item);
     $('#referencia').html('Referencia ' + data.referencia);
     $('#unidadFactor').html('Unidades por empaque ' + data.uni_factor);
     $('#uniFactorHid').val(data.uni_factor);
@@ -71,8 +75,8 @@ var urlEC = 'https://cotools.co/';
         success: function(respuesta) {
             if ( respuesta.estado ) {
                 generarVistaDetalleItem(respuesta.data.data.principal);
-            } else {
-                bootbox.alert('no fue posible obtener el producto.')                
+            } else {                
+                bootbox.alert('no fue posible obtener el producto.');
             }                
         },
         error: function() {
@@ -202,7 +206,6 @@ var leaveCar = function(data) {
  var generarVistaImagenes = function(data) {    
 
     var listPdrHtml = "";
-    $('.spinner-products').hide();
 
     data.forEach(element => {
 
@@ -235,11 +238,13 @@ var leaveCar = function(data) {
         // Formatea la descripcion extensa del producto
         var descExt = obtenerNombreProducto(element.itm_extens, 22);
 
+        var codRef = '<br><p>Cod ' + element.cod_item + '. Ref ' + element.referencia +  '</p>';
+
         listPdrHtml += '<div class="col-md-3">';
         listPdrHtml += '<div class="product-item">';
         listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descrip + '" width="200" height="150"></a>';
         listPdrHtml += '<div class="down-content">';
-        listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip + '</h4></a>';
+        listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip + codRef +'</h4></a>';
         listPdrHtml += valNoList + '<h6>' + valPdr + '</h6>';
         listPdrHtml += '<p title="' + element.itm_extens + '">' + descExt + '</p>';
         listPdrHtml += '<div class="text-right"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.cod_item + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarrito(this)"></i></div>';
@@ -257,8 +262,7 @@ var leaveCar = function(data) {
  */
 function obtenerItemsGrupo(data) {
 
-    $('.spinner-products').show();
-    $('#grd_items_grupos').html('');
+    putLoaders(4);
 
     setearUbicacionGrupo(data.id);
     
@@ -273,7 +277,9 @@ function obtenerItemsGrupo(data) {
             if ( respuesta.estado ) {
                 generarVistaImagenes(respuesta.data);
             } else {
-                bootbox.alert('no fue posible obtener los items del grupo.');                
+                bootbox.alert('no fue posible obtener los items del grupo.', function(){
+                    $('#grd_items_grupos').html('');
+                });                
             }
             
         },
@@ -404,6 +410,32 @@ var setearValores = function() {
     $('#gruSelec').html('');
     $('#catSelec').addClass('active-pos');
 }
+
+/**
+ * Crea un loader en forma de grilla de imagenes
+ */
+ var putLoaders = function(cant = 20) {
+    var listPdrHtml = "";    
+
+    for( var i = 0; i < cant; i++) {
+
+        listPdrHtml += '<div class="col-md-3">';
+        listPdrHtml += '<div class="product-item">';
+        listPdrHtml += '<div style="position: relative">';
+        listPdrHtml += '<a href="#"><img src="assets/images/empty.jpg" width="200" height="150"></a>';                
+        listPdrHtml += '</div>';
+        listPdrHtml += '<div class="down-content text-center">';
+        listPdrHtml += '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>';
+        listPdrHtml += '</div>';        
+        listPdrHtml += '</div>';
+        listPdrHtml += '</div>'; 
+      
+    }
+
+    $('#grd_items_grupos').html(listPdrHtml);
+
+}
+
 
 $( document ).ready(function() {  
     obtenerCategorias();     

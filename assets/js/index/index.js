@@ -2,6 +2,9 @@ var pagActual = "1";
 var urlImg = 'https://admin.cotools.co/dist/img/';
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlEC = 'https://cotools.co/';
+// var urlImg = 'http://localhost:85/dist/img/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlEC = 'http://localhost:85/ecommerce_cotools/';
 var cantItems = 20;
 var cantidadItems = 0;
 
@@ -127,8 +130,6 @@ function restaurarUniFactor() {
  */
 var generarVistaDetalleItem = function(data) {
 
-    $('#formAgregarItem').modal('toggle'); 
-
     // Valida el precio del producto basado en la lista a la cual pertenece el cliente
     var valNoList = '';
     if(localStorage.getItem('cod_benf') != null ) {
@@ -153,6 +154,7 @@ var generarVistaDetalleItem = function(data) {
     var img = obtenerImagenProducto(data.imagenes);
 
     $('#formAgregarItemLabel').html( data.descrip );
+    $('#itmCodigo').html('Código ' + data.cod_item);
     $('#referencia').html('Referencia ' + data.referencia);
     $('#unidadFactor').html('Unidades por empaque ' + data.uni_factor);
     $('#uniFactorHid').val(data.uni_factor);
@@ -167,6 +169,25 @@ var generarVistaDetalleItem = function(data) {
     $('#ppal_image').html(detailHtml);    
 } 
 
+/**
+ * Genera una vista previa del modal de agregar un producto al carrito
+ */
+var generarVistaModal = function(id) {
+    $('#formAgregarItemLabel').html($('#title_' + id).val());
+    $('#itmCodigo').html('Código');
+    $('#referencia').html('Referencia ');
+    $('#unidadFactor').html('Unidades por empaque');
+    $('#uniFactorHid').val('');
+    $('#descHid').val('');
+    $('#uniFactor').val('');
+    $('#codHid').val('');
+    $('#delPrice').html('');
+    $('#precioPpal').html('');    
+    var detailHtml = '<div class="cont_img_ppal"><img src="assets/images/empty.jpg" width="180" height="200"/>';
+    detailHtml += '<div class="centrado"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></div></div>'
+    $('#ppal_image').html(detailHtml);       
+    $('#formAgregarItem').modal('toggle'); 
+}
 
 /**
  * Desplegar modal para agregar producto al carrito de compras
@@ -175,6 +196,7 @@ var generarVistaDetalleItem = function(data) {
 function agregarAlCarrito(data) {
 
     var arrData = data.id.split('_');
+    generarVistaModal(arrData['1']);
     $.ajax({
         method: "GET",
         url: urlC + "get-item-detail",
@@ -206,8 +228,6 @@ var leaveCar = function(data) {
  * @param {*} data 
  */
 var generarVistaImagenes = function(data) {
-
-    $('#prods_availables').html('');
 
     var listPdrHtml = "";
 
@@ -242,11 +262,14 @@ var generarVistaImagenes = function(data) {
         // Formatea la descripcion extensa del producto
         var descExt = obtenerNombreProducto(element.itm_extens, 25);
 
+        var codRef = '<br><p>Cod ' + element.cod_item + '. Ref ' + element.referencia +  '</p>';
+
         listPdrHtml += '<div class="col-md-3">';
         listPdrHtml += '<div class="product-item">';
         listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descrip + '" width="357" height="260"></a>';
         listPdrHtml += '<div class="down-content">';
-        listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip + '</h4></a>';
+        listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip + codRef + '</h4></a>';
+        listPdrHtml += '<input type="hidden" id="title_' + element.cod_item + '" value="' + element.descrip + '">';
         listPdrHtml += valNoList + '<h6>' + valPdr + '</h6>';
         listPdrHtml += '<p title="' + element.itm_extens + '">' + descExt + '</p>';
         listPdrHtml += '<div class="text-right"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.cod_item + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarrito(this)"></i></div>';
@@ -254,7 +277,7 @@ var generarVistaImagenes = function(data) {
         listPdrHtml += '</div>';
         listPdrHtml += '</div>';
     });
-    $('.spinner-products').hide();
+    $('#ul_paginator').html('');
     $('#prods_availables').html(listPdrHtml);
 }
 
@@ -263,9 +286,6 @@ var generarVistaImagenes = function(data) {
  * @param {*} pag 
  */
 var getImages = function(pag) {
-
-    $('#prods_availables').html('');
-    $('.spinner-products').show();
 
     if(pag == ""){
         pag = 1;
@@ -301,6 +321,7 @@ function previusPage() {
     $('.li_paginate').removeClass("active");
     pagActual = parseInt(pagActual) - 1;
 
+    putLoaders(20);
     getImages(pagActual);
     paginador();
 }
@@ -311,7 +332,8 @@ function previusPage() {
 function nextPage() {
     $('.li_paginate').removeClass("active");
     pagActual = parseInt(pagActual) + 1;
-
+    
+    putLoaders(20);
     getImages(pagActual);
     paginador();
 }
@@ -326,6 +348,7 @@ function changePag(data) {
 
     $('.li_paginate').removeClass("active");
 
+    putLoaders(20);
     getImages(pagActual);
     paginador();
 } 
@@ -420,20 +443,21 @@ var paginador = function() {
  * Buscar productos por palabra clave
  */
 function buscarProductos() {
-    $('.spinner-products').show();
     var descProd = $('#inpProductoPC').val();
-    $('#prods_availables').html("");
+    putLoaders(8);
     if(descProd != "") {
         $.ajax({
             method: "GET",
-            url: urlC + "get-items-name",
+            url: urlC + "get-items-general",
             data: { descripcion: descProd },
             success: function(respuesta) {
     
                 if ( respuesta.estado ) {
                     generarVistaImagenes(respuesta.data);                    
                 } else {
-                    bootbox.alert('no fue posible obtener los productos.')                
+                    bootbox.alert('no fue posible obtener los productos.', function(){
+                        $('#prods_availables').html('');
+                    });
                 }
                 
             },
@@ -447,6 +471,40 @@ function buscarProductos() {
     }
 }
 
-$( document ).ready(function() {  
-    getImages(pagActual);   
+/**
+ * Crea un loader en forma de grilla de imagenes
+ */
+var putLoaders = function(cant = 20) {
+    var listPdrHtml = "";    
+
+    for( var i = 0; i < cant; i++) {
+
+        listPdrHtml += '<div class="col-md-3">';
+        listPdrHtml += '<div class="product-item">';
+        listPdrHtml += '<div style="position: relative">';
+        listPdrHtml += '<a href="#"><img src="assets/images/empty.jpg" width="357" height="260"></a>';                
+        listPdrHtml += '</div>';
+        listPdrHtml += '<div class="down-content text-center">';
+        listPdrHtml += '<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>';
+        listPdrHtml += '</div>';        
+        listPdrHtml += '</div>';
+        listPdrHtml += '</div>';    
+    }
+
+    $('#prods_availables').html(listPdrHtml);
+
+}
+
+$( document ).ready(function() {   
+
+    putLoaders(20);
+    getImages(pagActual);  
+ 
+    /**Agrega el evento de presionar enter cuando se encuentra en el input de buscar productos */
+    $('#inpProductoPC').keypress(function(e){
+        if(e.keyCode == 13){
+            buscarProductos();
+        }
+    });
+
 });

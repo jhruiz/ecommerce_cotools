@@ -1,5 +1,7 @@
 var urlC = 'https://cotoolsback.cotools.co/public/';
 var urlEC = 'https://cotools.co/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlEC = 'http://localhost:85/ecommerce_cotools/';
 /**
  * Obtiene la categoria seleccionada y redirecciona a la pagina de grupos de datax
  */
@@ -33,9 +35,8 @@ var crearSelectCategorias = function(data) {
         method: "GET",
         url: urlC + "get-categories",
         success: function(respuesta) {
-
             if ( respuesta.estado ) {
-                crearSelectCategorias(respuesta.data);
+                crearSelectCategorias(respuesta.data);                
             } else {
                 bootbox.alert('no fue posible obtener las categorías.')                
             }
@@ -47,6 +48,6 @@ var crearSelectCategorias = function(data) {
       });     
 }
 
-$( document ).ready(function() {     
+$( document ).ready(function() {  
     obtenerCategorias();
 });
