@@ -300,8 +300,16 @@ var getImages = function(pag) {
         success: function(respuesta) {            
 
             if ( respuesta.estado ) {
+                /** Genera la grilla de imagenes */
                 generarVistaImagenes(respuesta.data); 
+
+                /** Obtiene la cantidad total de items en stock */
                 cantidadItems = respuesta.cantidad;  
+
+                /** Guarda en el local storage la cantidad de items */
+                localStorage.setItem('cantidadItems', cantidadItems);
+
+                /** Agrega el paginador */
                 paginador();                             
             } else {
                 alert('no fue posible obtener los productos.')                
@@ -497,9 +505,15 @@ var putLoaders = function(cant = 20) {
 
 $( document ).ready(function() {   
 
+    /**Obtiene la cantidad de items guardadas en el local storage */
+    cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
+
+    /**Agrega los loaders */
     putLoaders(20);
+
+    /**Obtiene los items y sus imagenes */
     getImages(pagActual);  
- 
+
     /**Agrega el evento de presionar enter cuando se encuentra en el input de buscar productos */
     $('#inpProductoPC').keypress(function(e){
         if(e.keyCode == 13){
