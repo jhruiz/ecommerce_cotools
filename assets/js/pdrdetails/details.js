@@ -332,6 +332,7 @@ var agregarItemsPorGrupo = function(grupo) {
         gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descrip + '" width="215" height="170"></a>';
         gruposHtml += '<div class="down-content">';
         gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip +codRef + '</h4></a>';
+        gruposHtml += '<input type="hidden" id="title_' + element.cod_item + '" value="' + element.descrip + '">';
         gruposHtml += valNoList + '<h6>' + valPdr + '</h6>';
         gruposHtml += '<p title="' + element.itm_extens + '">' + descExt + '</p>';
         gruposHtml += '<div class="text-right"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.cod_item + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarritoDesdeGrupo(this)"></i></div>';

@@ -20,8 +20,6 @@ var urlEC = 'https://cotools.co/';
  */
  var generarVistaDetalleItem = function(data) {
 
-    $('#formAgregarItem').modal('toggle'); 
-
     // Valida el precio del producto basado en la lista a la cual pertenece el cliente
     var valNoList = '';
     if(localStorage.getItem('cod_benf') != null ) {
@@ -68,6 +66,7 @@ var urlEC = 'https://cotools.co/';
  function agregarAlCarrito(data) {
     
     var arrData = data.id.split('_');
+    generarVistaModal(arrData['1']);
     $.ajax({
         method: "GET",
         url: urlC + "get-item-detail",
@@ -245,6 +244,7 @@ var leaveCar = function(data) {
         listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descrip + '" width="200" height="150"></a>';
         listPdrHtml += '<div class="down-content">';
         listPdrHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip + codRef +'</h4></a>';
+        listPdrHtml += '<input type="hidden" id="title_' + element.cod_item + '" value="' + element.descrip + '">';
         listPdrHtml += valNoList + '<h6>' + valPdr + '</h6>';
         listPdrHtml += '<p title="' + element.itm_extens + '">' + descExt + '</p>';
         listPdrHtml += '<div class="text-right"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.cod_item + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarrito(this)"></i></div>';
@@ -409,6 +409,26 @@ var setearValores = function() {
     $('#catSelec').html(' > ' + catName);
     $('#gruSelec').html('');
     $('#catSelec').addClass('active-pos');
+}
+
+/**
+ * Genera una vista previa del modal de agregar un producto al carrito
+ */
+ var generarVistaModal = function(id) {
+    $('#formAgregarItemLabel').html($('#title_' + id).val());
+    $('#itmCodigo').html('Código');
+    $('#referencia').html('Referencia ');
+    $('#unidadFactor').html('Unidades por empaque');
+    $('#uniFactorHid').val('');
+    $('#descHid').val('');
+    $('#uniFactor').val('');
+    $('#codHid').val('');
+    $('#delPrice').html('');
+    $('#precioPpal').html('');    
+    var detailHtml = '<div class="cont_img_ppal"><img src="assets/images/empty.jpg" width="180" height="200"/>';
+    detailHtml += '<div class="centrado"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></div></div>'
+    $('#ppal_image').html(detailHtml);       
+    $('#formAgregarItem').modal('toggle'); 
 }
 
 /**

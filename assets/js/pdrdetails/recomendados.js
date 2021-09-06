@@ -1,7 +1,7 @@
-var urlImg = 'https://admin.cotools.co/dist/img/';
-var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlImg = 'http://localhost:85/dist/img/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlImg = 'https://admin.cotools.co/dist/img/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+var urlImg = 'http://localhost:85/dist/img/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
 
 /**
  * Valida que el campo sea numérico
@@ -31,8 +31,6 @@ function restaurarUniFactorDetalle() {
  * @param {*} data 
  */
  var generarVistaDetalleItem = function(data) {
-
-    $('#formAgregarItem').modal('toggle'); 
 
     // Valida el precio del producto basado en la lista a la cual pertenece el cliente
     var valNoList = '';
@@ -74,12 +72,33 @@ function restaurarUniFactorDetalle() {
 } 
 
 /**
+ * Genera una vista previa del modal de agregar un producto al carrito
+ */
+ var generarVistaModal = function(id) {
+    $('#formAgregarItemLabel').html($('#title_' + id).val());
+    $('#codModal').html('Código');
+    $('#referenciaModal').html('Referencia ');
+    $('#unidadFactorModal').html('Unidades por empaque');
+    $('#uniFactorHidModal').val('');
+    $('#uniFactorModal').val('');
+    $('#descHidModal').val('');
+    $('#codHidModal').val('');
+    $('#delPriceModal').html('');
+    $('#precioPpalModal').html('');    
+    var detailHtml = '<div class="cont_img_ppal"><img src="assets/images/empty.jpg" width="180" height="200"/>';
+    detailHtml += '<div class="centrado"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></div></div>'
+    $('#ppal_image_modal').html(detailHtml);       
+    $('#formAgregarItem').modal('toggle'); 
+}
+
+/**
  * Desplegar modal para agregar producto al carrito de compras
  * @param {*} data 
  */
  function agregarAlCarritoDesdeGrupo(data) {
 
      var arrData = data.id.split('_');
+     generarVistaModal(arrData['1']);
      $.ajax({
          method: "GET",
          url: urlC + "get-item-detail",
