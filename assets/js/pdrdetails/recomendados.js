@@ -1,7 +1,7 @@
-// var urlImg = 'https://admin.cotools.co/dist/img/';
-// var urlC = 'https://cotoolsback.cotools.co/public/';
-var urlImg = 'http://localhost:85/dist/img/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
+var urlImg = 'https://admin.cotools.co/dist/img/';
+var urlC = 'https://cotoolsback.cotools.co/public/';
+// var urlImg = 'http://localhost:85/dist/img/';
+// var urlC = 'http://localhost:85/cotoolsback/public/';
 
 /**
  * Valida que el campo sea numérico
