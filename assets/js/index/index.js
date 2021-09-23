@@ -511,7 +511,7 @@ $( document ).ready(function() {
     var fecha1 = new Date(localStorage.getItem('fechItems'));
     let fecha2 = new Date()
     let resta = fecha2.getTime() - fecha1.getTime()
-    let dias = Math.round(resta/ (1000*60*60*12));
+    let dias = Math.round(resta/ (1000*60*60));
 
     console.log('dias', dias);
 
