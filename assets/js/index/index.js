@@ -513,6 +513,8 @@ $( document ).ready(function() {
 
     let dias = fecha2.getTime() - fecha1.getTime()
 
+    console.log('estos son los dias', dias);
+
     if ( dias >= 1 ) {
         console.log('entra dias mayor a cero asi que cantidad es igual a 0');
         cantidadItems = 0;
