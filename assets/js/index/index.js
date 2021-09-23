@@ -527,7 +527,10 @@ $( document ).ready(function() {
     var fechActualizacion = localStorage.getItem('fechItems');
     var fechaActual = new Date();
 
-    var time_difference = difference(fechActualizacion,fechaActual);
+    date1 = new Date("2020-12-10");
+    date2 = new Date("2021-10-31");    
+
+    var time_difference = difference(date1,date2);
     console.log('diferencia', time_difference);
 
     /**Agrega los loaders */
