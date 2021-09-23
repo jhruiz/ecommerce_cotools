@@ -514,8 +514,9 @@ $( document ).ready(function() {
     fechActualizacion = localStorage.getItem('fechItems');
     fechaActual = new Date();
 
-    var difference = fechaActual-fechActualizacion;
-    console.log('esta es la diferencia entre las dos fechas', difference);
+    var difference= Math.abs(fechaActual-fechActualizacion);
+    var days = difference/(1000 * 3600 * 24)
+    console.log('esta es la diferencia entre las dos fechas', days);
 
     /**Agrega los loaders */
     putLoaders(20);
