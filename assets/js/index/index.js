@@ -505,23 +505,27 @@ var putLoaders = function(cant = 20) {
 
 }
 
-
-$( document ).ready(function() {   
+/**
+ * Obtiene la cantidad de items para el paginador
+ */
+var calcCantItems = function() {
     /**Fecha de actualizacion de la cantidad de items vs la fecha actual*/
     var fecha1 = new Date(localStorage.getItem('fechItems'));
     let fecha2 = new Date()
     let resta = fecha2.getTime() - fecha1.getTime()
-    let dias = Math.round(resta/ (1000*60*60));
-
-    console.log('dias', dias);
+    let dias = Math.round(resta/ (1000*60*60*24));
 
     if ( dias >= 1 ) {
         cantidadItems = 0;
     } else {        
         /**Obtiene la cantidad de items guardadas en el local storage */
         cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
-    }
+    }    
+}
 
+
+$( document ).ready(function() {   
+    calcCantItems()
 
     /**Agrega los loaders */
     putLoaders(20);
