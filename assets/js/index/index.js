@@ -505,18 +505,6 @@ var putLoaders = function(cant = 20) {
 
 }
 
-/**
- * Diferencia entre fechas
- * @param {*} date1 
- * @param {*} date2 
- * @returns 
- */
-function difference(date1, date2) {  
-    const date1utc = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const date2utc = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
-      day = 1000*60*60*24;
-    return(date2utc - date1utc)/day
-}
 
 $( document ).ready(function() {   
 
@@ -524,14 +512,11 @@ $( document ).ready(function() {
     cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
 
     /**Fecha de actualizacion de la cantidad de items */
-    var fechActualizacion = localStorage.getItem('fechItems');
-    var fechaActual = new Date();
+    var fecha1 = localStorage.getItem('fechItems');
+    let fecha2 = new Date()
 
-    date1 = new Date("2020-12-10");
-    date2 = new Date("2021-10-31");    
-
-    var time_difference = difference(date1,date2);
-    console.log('diferencia', time_difference);
+    let resta = fecha2.getTime() - fecha1.getTime()
+    console.log('prueba de fecha', Math.round(resta/ (1000*60*60*24)))
 
     /**Agrega los loaders */
     putLoaders(20);
