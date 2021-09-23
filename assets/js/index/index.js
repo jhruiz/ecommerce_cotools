@@ -510,6 +510,10 @@ $( document ).ready(function() {
     /**Obtiene la cantidad de items guardadas en el local storage */
     cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
 
+    /**Fecha de actualizacion de la cantidad de items */
+    fechAct = localStorage.getItem('fechItems');
+    console.log('esta es la fecha de actualización', fechAct);
+
     /**Agrega los loaders */
     putLoaders(20);
 
