@@ -505,18 +505,30 @@ var putLoaders = function(cant = 20) {
 
 }
 
+/**
+ * Diferencia entre fechas
+ * @param {*} date1 
+ * @param {*} date2 
+ * @returns 
+ */
+function difference(date1, date2) {  
+    const date1utc = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const date2utc = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+      day = 1000*60*60*24;
+    return(date2utc - date1utc)/day
+}
+
 $( document ).ready(function() {   
 
     /**Obtiene la cantidad de items guardadas en el local storage */
     cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
 
     /**Fecha de actualizacion de la cantidad de items */
-    fechActualizacion = localStorage.getItem('fechItems');
-    fechaActual = new Date();
+    var fechActualizacion = localStorage.getItem('fechItems');
+    var fechaActual = new Date();
 
-    var difference= Math.abs(fechaActual-fechActualizacion);
-    var days = difference/(1000 * 3600 * 24)
-    console.log('esta es la diferencia entre las dos fechas', days);
+    var time_difference = difference(fechActualizacion,fechaActual);
+    console.log('diferencia', time_difference);
 
     /**Agrega los loaders */
     putLoaders(20);
