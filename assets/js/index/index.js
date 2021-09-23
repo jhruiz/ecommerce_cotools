@@ -308,6 +308,8 @@ var getImages = function(pag) {
 
                 /** Guarda en el local storage la cantidad de items */
                 localStorage.setItem('cantidadItems', cantidadItems);
+                const fecha = new Date();
+                localStorage.setItem('fechItems', fecha);
 
                 /** Agrega el paginador */
                 paginador();                             
