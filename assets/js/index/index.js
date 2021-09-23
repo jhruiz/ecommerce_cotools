@@ -512,7 +512,7 @@ $( document ).ready(function() {
     cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
 
     /**Fecha de actualizacion de la cantidad de items */
-    var fecha1 = localStorage.getItem('fechItems');
+    var fecha1 = new Date(localStorage.getItem('fechItems'));
     let fecha2 = new Date()
 
     let resta = fecha2.getTime() - fecha1.getTime()
