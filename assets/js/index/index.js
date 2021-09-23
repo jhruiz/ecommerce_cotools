@@ -507,16 +507,21 @@ var putLoaders = function(cant = 20) {
 
 
 $( document ).ready(function() {   
-
-    /**Obtiene la cantidad de items guardadas en el local storage */
-    cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
-
-    /**Fecha de actualizacion de la cantidad de items */
+    /**Fecha de actualizacion de la cantidad de items vs la fecha actual*/
     var fecha1 = new Date(localStorage.getItem('fechItems'));
     let fecha2 = new Date()
 
-    let resta = fecha2.getTime() - fecha1.getTime()
-    console.log('prueba de fecha', Math.round(resta/ (1000*60*60*24)))
+    let dias = fecha2.getTime() - fecha1.getTime()
+
+    if ( dias >= 1 ) {
+        console.log('entra dias mayor a cero asi que cantidad es igual a 0');
+        cantidadItems = 0;
+    } else {
+        console.log('entra dias cero entonces toma lo que este en storage');
+        /**Obtiene la cantidad de items guardadas en el local storage */
+        cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
+    }
+
 
     /**Agrega los loaders */
     putLoaders(20);
