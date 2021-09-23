@@ -511,8 +511,11 @@ $( document ).ready(function() {
     cantidadItems = localStorage.getItem('cantidadItems') == null ? 0 : localStorage.getItem('cantidadItems');
 
     /**Fecha de actualizacion de la cantidad de items */
-    fechAct = localStorage.getItem('fechItems');
-    console.log('esta es la fecha de actualización', fechAct);
+    fechActualizacion = localStorage.getItem('fechItems');
+    fechaActual = new Date();
+
+    var difference = fechaActual-fechActualizacion;
+    console.log('esta es la diferencia entre las dos fechas', difference);
 
     /**Agrega los loaders */
     putLoaders(20);
