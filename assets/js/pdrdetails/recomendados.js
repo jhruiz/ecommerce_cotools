@@ -1,7 +1,9 @@
-var urlImg = 'https://admin.cotools.co/dist/img/';
-var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlImg = 'http://localhost:85/dist/img/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlImg = 'https://admin.cotools.co/dist/img/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
+var valDefecto = 'precio3';
+var ivaIncDefecto = 'ivaincp3';
 
 /**
  * Valida que el campo sea numérico
@@ -30,39 +32,40 @@ function restaurarUniFactorDetalle() {
  * Genera la información de la vista del modal del carrito de compras
  * @param {*} data 
  */
- var generarVistaDetalleItem = function(data) {
+ var generarVistaDetalleItem = function( data, imgItems ) {
 
     // Valida el precio del producto basado en la lista a la cual pertenece el cliente
     var valNoList = '';
-    if(localStorage.getItem('cod_benf') != null ) {
-        if( localStorage.getItem('lista_benf') == '1' ) {
-            var valor = data.precio1;
-            var ivaInc = data.iva_inc_p1;
-            valNoList = precioProductoLista3(data.precio3);
-        } else if( localStorage.getItem('lista_benf') == '2' ) {
-            var valor = data.precio2;
-            var ivaInc = data.iva_inc_p2;
-            valNoList = precioProductoLista3(data.precio3);
-        } else {
-            var valor = data.precio3;
-            var ivaInc = data.iva_inc_p3;
+    if(localStorage.getItem('id') != null ) {
+
+        var listaPrecio = 'precio' + localStorage.getItem('lista_benf');
+        var valIvaInc = 'ivaincp' + localStorage.getItem('lista_benf');
+        var valor = data['0'][listaPrecio];
+        var ivaInc = data['0'][valIvaInc];            
+
+        if( valDefecto != listaPrecio) {
+            valNoList = precioProductoLista(data['0'].precio3);
         }
 
     } else {
-        var valor = data.precio3;
-        var ivaInc = data.iva_inc_p3;
+        var valor = data['0'][valDefecto];
+        var ivaInc = data['0'][ivaIncDefecto];
     }    
 
-    var img = obtenerImagenProducto(data.imagenes);
+    var imgUrl = new Object();
+    var imagenes = [];
+    imgUrl.url = imgItems[data['0'].item_id];
+    imagenes.push(imgUrl);
+    var img = obtenerImagenProducto( imagenes );
 
-    $('#formAgregarItemLabel').html( data.descrip );
-    $('#codModal').html('Código ' + data.cod_item);
-    $('#referenciaModal').html('Referencia ' + data.referencia);
-    $('#unidadFactorModal').html('Unidades por empaque ' + data.uni_factor);
-    $('#uniFactorHidModal').val(data.uni_factor);
-    $('#uniFactorModal').val(data.uni_factor);
-    $('#descHidModal').val(data.descrip + '<br> Ref. ' + data.referencia);
-    $('#codHidModal').val(data.cod_item);
+    $('#formAgregarItemLabel').html( data['0'].descripcion );
+    $('#codModal').html('Código ' + data['0'].codigo);
+    $('#referenciaModal').html('Referencia ' + data['0'].referencia);
+    $('#unidadFactorModal').html('Unidades por empaque ' + data['0'].unidad_factor);
+    $('#uniFactorHidModal').val(data['0'].unidad_factor);
+    $('#uniFactorModal').val(data['0'].unidad_factor);
+    $('#descHidModal').val(data['0'].descripcion + '<br> Ref. ' + data['0'].referencia);
+    $('#codHidModal').val(data['0'].codigo);
     if(valNoList != "") {
         $('#delPriceModal').html(valNoList);
     }        
@@ -101,11 +104,11 @@ function restaurarUniFactorDetalle() {
      generarVistaModal(arrData['1']);
      $.ajax({
          method: "GET",
-         url: urlC + "get-item-detail",
+         url: urlC + "item/obtener",
          data: { idItem: arrData['1'] },
          success: function(respuesta) {
              if ( respuesta.estado ) {
-                 generarVistaDetalleItem(respuesta.data.data.principal);
+                 generarVistaDetalleItem( respuesta.data, respuesta.imgItems );
              } else {
                  bootbox.alert('no fue posible obtener el producto.')                
              }                

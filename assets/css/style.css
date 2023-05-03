@@ -22,8 +22,8 @@ ul {
 }
 
 .spn-find-products {
-	background-color: rgb(253, 139, 41); 
-	border-color: rgb(253, 139, 41); 
+	background-color: rgb(255, 0, 0); 
+	border-color: rgb(255, 0, 0); 
 	color: white;
 }
 
@@ -112,7 +112,7 @@ a.filled-button:hover {
 
 #preloader {
   overflow: hidden;
-  background: rgb(253, 139, 41);
+  background: rgb(255, 0, 0);
   left: 0;
   right: 0;
   top: 0;
@@ -244,7 +244,7 @@ header .navbar {
 }
 .navbar .navbar-brand h2 em {
 	font-style: normal;
-	color: rgb(253, 139, 41);
+	color: rgb(255, 0, 0);
 }
 #navbarResponsive {
 	z-index: 999;
@@ -271,7 +271,7 @@ header .navbar {
 .navbar .navbar-nav .show>.nav-link {
 	color: #fff;
 	padding-bottom: 25px;
-	border-bottom: 3px solid rgb(253, 139, 41);
+	border-bottom: 3px solid rgb(255, 0, 0);
 }
 .navbar .navbar-toggler-icon {
 	background-image: none;
@@ -346,7 +346,7 @@ header .navbar {
 }
 
 .banner .text-content h2 {
-	color: rgb(253, 139, 41);
+	color: rgb(255, 0, 0);
 	font-size: 62px;
 	font-weight: 700;
 	letter-spacing: 4px;

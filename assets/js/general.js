@@ -17,18 +17,25 @@ var agregarItemMenu = function() {
 }
 
 /**
+ * Resta 1 a la cantidad de items mostrados en el menu
+ */
+var eliminarItemMenu = function () {
+    var cant = parseInt($('#cntItems').text());
+    $('#cntItems').text(cant - 1);
+}
+
+/**
  * Obtiene los items agregados por el cliente al carrito de compras y lo setea en el menu
  */
 var obtenerItems = function() {
-    var userId = localStorage.getItem('id');
-    var codBenf = localStorage.getItem('cod_benf');
-
     // valida si existe un usuario logueado
+    var userId = localStorage.getItem('id');
+    
     if( userId != null ) {
         $.ajax({
             method: "GET",
-            url: urlC + "get-order-detail",
-            data: { userId : userId, codBenf : codBenf },
+            url: urlC + "pedido/cantidaditems",
+            data: { userId : userId },
             success: function(respuesta) {
                 if(respuesta.estado) {
                     $('#cntItems').html(respuesta.data.length);
@@ -39,6 +46,23 @@ var obtenerItems = function() {
             }
         });             
     }    
+}
+
+/**
+ * Genera el número de pedido que muestra al cliente tras aprobarlo
+ * @param {*} data 
+ */
+ var generarNumeroPedido = function( data ) {
+    
+    var numPedido = '';
+
+    // separa la fecha por el espacio entre la fecha y la hora
+    var arrDate = data.fechapedido.split(' ');
+
+    // genera el número de pedido con el id del pedido, el id del usuario y la hora sin los dos puntos
+    numPedido = data.id.toString() + data.usuario_id.toString() + arrDate['1'].replaceAll(':', '');
+
+    return numPedido;
 }
 
 $( document ).ready(function() {   

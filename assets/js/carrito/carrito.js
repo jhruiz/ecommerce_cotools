@@ -1,13 +1,13 @@
-var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
 
 /**
  * Valida si hay un usuario logueado
  */
 var validarUsuario = function() {
-    var codBenf = localStorage.getItem('cod_benf');
+    var userId = localStorage.getItem('id');
 
-    if( codBenf == null ) {
+    if( userId == null ) {
         return false;
     }
 
@@ -48,7 +48,7 @@ var validarDatosModal = function() {
 /**
  * Agrega productos al carrito de compras
  */
-var salvarAlCarrito = function(data) {
+var salvarAlCarrito = function() {
 
     // valida si hay un usuario logueado
     var resp = validarUsuario();
@@ -57,19 +57,18 @@ var salvarAlCarrito = function(data) {
     var msg = validarDatos();
 
     if( resp ) {
-
+        
         if ( msg == '' ) {
 
             var item = $('#codHid').val();
             var cant = $('#uniFactor').val();
             var desc = $('#descHid').val();
-            var codBenf = localStorage.getItem('cod_benf');
-            var usuarioId = localStorage.getItem('id');            
+            var usuarioId = localStorage.getItem('id'); 
             
             $.ajax({
                 method: "GET",
-                url: urlC + "add-items-to-car",
-                data: { item : item, cant : cant, codBenf : codBenf, usuarioId : usuarioId, desc : desc },
+                url: urlC + "pedido/agregaritem",
+                data: { item : item, cant : cant, usuarioId : usuarioId, desc : desc },
                 success: function(respuesta) {
         
                     if ( respuesta.estado ) {
@@ -114,16 +113,16 @@ var salvarAlCarrito = function(data) {
             var item = $('#codHidModal').val();
             var cant = $('#uniFactorModal').val();
             var desc = $('#descHidModal').val();
-            var codBenf = localStorage.getItem('cod_benf');
             var usuarioId = localStorage.getItem('id');
             
             $.ajax({
                 method: "GET",
-                url: urlC + "add-items-to-car",
-                data: { item : item, cant : cant, codBenf : codBenf, usuarioId : usuarioId, desc : desc },
+                url: urlC + "pedido/agregaritem",
+                data: { item : item, cant : cant, usuarioId : usuarioId, desc : desc },
                 success: function(respuesta) {
         
                     if ( respuesta.estado ) {
+                        agregarItemMenu();
                         bootbox.alert('Producto agregado al carrito de compras.');
                     } else {
                         bootbox.alert(respuesta.mensaje);

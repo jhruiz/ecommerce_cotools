@@ -1,9 +1,9 @@
-var urlImg = 'https://admin.cotools.co/dist/img/';
-var urlC = 'https://cotoolsback.cotools.co/public/';
-var urlD = 'https://dataxback.cotools.co/public/';
-// var urlImg = 'http://localhost:85/dist/img/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
-// var urlD = 'http://localhost:85/dataxback/';
+// var urlImg = 'https://admin.cotools.co/dist/img/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+// var urlD = 'https://dataxback.cotools.co/public/';
+var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
+var urlD = 'http://localhost:85/dataxback/';
 
 /**
  * Modifica la cantidad solicitada de un item específico
@@ -19,10 +19,9 @@ var cambiarCantidadItem = function(data) {
     } else {
         var idPed = $('#' + data.id).data('idped');
         var codItem = data.id.replace('cant_', '');
-
         $.ajax({
             method: "GET",
-            url: urlC + "change-cant-item",
+            url: urlC + "pedidodetalle/cambiarcantidad",
             data: { codItem : codItem, idPed : idPed, cant : cant },
             success: function(respuesta) {
     
@@ -46,6 +45,10 @@ var cambiarCantidadItem = function(data) {
  * @param {*} respuesta 
  */
 var resumenPedido = function(respuesta) {
+    
+    // genera el número de pedido que mostrará al cliente
+    var numPedido = generarNumeroPedido(respuesta.data['0']);
+
     const date = new Date()
     const options = {
       year: 'numeric', month: 'numeric', day: 'numeric',
@@ -57,12 +60,12 @@ var resumenPedido = function(respuesta) {
     var htmlDetPed = "";
 
     $('#tittle-pedido-ok').html('<h4>Su pedido se registró exitósamente.</h4><br>');
-    $('#subtittle-pedido-ok').html('<span>Gracias por elegirnos. A continuación encuentrará el resumen del pedido.</span><br>');
+    $('#subtittle-pedido-ok').html('<span>Gracias por elegirnos. A continuación encontrará el resumen del pedido.</span><br>');
     $('#email-pedido-ok').html('<span>En su bandeja de correo encontrará un mensaje con el detalle de su compra.</span>');
     
     htmlDetPed += '<tr>';
     htmlDetPed += '<th class="text-right">Número del pedido</th>';
-    htmlDetPed += '<td class="text-right">' + respuesta.data['0'].nro_pdweb + '</td>';
+    htmlDetPed += '<td class="text-right">' + numPedido + '</td>';
     htmlDetPed += '</tr>';
 
     htmlDetPed += '<tr>';
@@ -126,13 +129,14 @@ var eliminarItemPedido = function(idItem, idPed) {
     // valida si existe un usuario logueado
     $.ajax({
         method: "GET",
-        url: urlC + "delete-item",
+        url: urlC + "pedidodetalle/eliminaritem",
         data: { idItem : idItem, idPed : idPed },
         success: function(respuesta) {
 
             if( respuesta.estado ) {
                 $('#tr_' + idItem).fadeOut("normal", function() {
                     $(this).remove();
+                    eliminarItemMenu();
                 });      
                 obtenerInformacionPedido();               
             } else {
@@ -167,7 +171,7 @@ var setearInformacionCliente = function() {
     $('#nameUser').html(localStorage.getItem('nom_benf'));
     $('#emailUser').html(localStorage.getItem('email'));
     $('#telUser').html(localStorage.getItem('telef_benf'));
-    $('#locUser').html(localStorage.getItem('lugar_benf'));
+    $('#locUser').html(localStorage.getItem('ciudad') + ' ' + localStorage.getItem('direccion'));
 }
 
 /**
@@ -182,15 +186,15 @@ var obtenerDetalleItems = function( data ) {
     data.forEach(element => {
         var img = element.imagen == '' ? 'assets/images/empty.jpg' : urlImg + element.imagen;
 
-        htmlDetPed += '<tr id="tr_' + element.cod_item + '">';
+        htmlDetPed += '<tr id="tr_' + element.id + '">';
         htmlDetPed += '<td><img src="' + img + '" alt="" width="100" height="60"></img><br>';
-        htmlDetPed += '<i class="fa fa-times-circle text-secondary" id="item_' + element.cod_item + '" data-idped="' + element.pedido_id + '" title="Eliminar item" onmouseleave="leaveDel(this)" onmouseover="overDel(this)" onclick="eliminarItem(this)"></i></td>'        
+        htmlDetPed += '<i class="fa fa-times-circle text-secondary" id="item_' + element.id + '" data-idped="' + element.pedido_id + '" title="Eliminar item" onmouseleave="leaveDel(this)" onmouseover="overDel(this)" onclick="eliminarItem(this)"></i></td>'        
         htmlDetPed += '<th scope="row">' + element.descripcion +'</th>';
-        htmlDetPed += '<td><input type="text" class="form-control" value="' + element.cantidad + '" id="cant_' + element.cod_item + '" data-idped="' + element.pedido_id  + '" onblur="cambiarCantidadItem(this)" onkeyup="validarNumeros(this)"></input>';
-        htmlDetPed += '<input type="hidden" value="' + element.cantidad + '" id="cant_' + element.cod_item + '_h" ></input></td>';
-        htmlDetPed += '<td class="text-right">' + formatearNumero(element.precioventaunit) + '</td>';
+        htmlDetPed += '<td><input type="text" class="form-control" value="' + element.cantidad + '" id="cant_' + element.id + '" data-idped="' + element.pedido_id  + '" onblur="cambiarCantidadItem(this)" onkeyup="validarNumeros(this)"></input>';
+        htmlDetPed += '<input type="hidden" value="' + element.cantidad + '" id="cant_' + element.id + '_h" ></input></td>';
+        htmlDetPed += '<td class="text-right">' + formatearNumero(element.vlr_item) + '</td>';
         // htmlDetPed += '<td class="text-center"> 0% </td>';
-        htmlDetPed += '<td class="text-center">' + element.tasaiva + '% </td>';
+        htmlDetPed += '<td class="text-center">' + element.vlr_impuesto + '% </td>';
         htmlDetPed += '<td class="text-right">' + formatearNumero(element.baseTtal) + '</td>';
         htmlDetPed += '</tr>';        
     });
@@ -262,16 +266,14 @@ var generarListaCheckout = function(data, ttles) {
  */
 var obtenerInformacionPedido = function() {
     var userId = localStorage.getItem('id');
-    var codBenf = localStorage.getItem('cod_benf');
 
     // valida si existe un usuario logueado
     if( userId != null ) {
         $.ajax({
             method: "GET",
-            url: urlC + "get-order-detail",
-            data: { userId : userId, codBenf : codBenf },
+            url: urlC + "pedido/detallepedido",
+            data: { userId : userId },
             success: function(respuesta) {
-
                 if( respuesta.estado ) {
                     generarListaCheckout(respuesta.data, respuesta.ttles);
                 } else if( respuesta.mensaje != "" ){
@@ -280,7 +282,6 @@ var obtenerInformacionPedido = function() {
                     $('#det_pedido').html("");
                     $('#det_pago').html("");
                 }
-                
             },
             error: function() {
                 bootbox.alert('Se produjo un error. Por favor, inténtelo nuevamente.');
@@ -318,14 +319,14 @@ var modalUnidadesDisponibles = function(resp) {
  * para validar el pedido tambien en 
  * la base de datos de cotools
  */
-var actualizarPedidoWeb = function(pdWeb) {
+var actualizarPedidoWeb = function() {
     //se obtiene la información del cliente para registrar el pedido en datax
     var userId = localStorage.getItem('id');
 
     $.ajax({
         method: "GET",
-        url: urlC + "approve-order",
-        data: { userId : userId, pdWeb : pdWeb },
+        url: urlC + "pedido/aprobarpedido",
+        data: { userId : userId },
         success: function(respuesta) {
 
             if( respuesta.estado ) {
@@ -344,34 +345,6 @@ var actualizarPedidoWeb = function(pdWeb) {
 }
 
 /**
- * Si todos los productos se encuentran habilitados para la venta, 
- * se realiza el registro en datax
- */
-var procesarPedidoDatax = function() {
-    //se obtiene la información del cliente para registrar el pedido en datax
-    var userId = localStorage.getItem('id');
-
-    $.ajax({
-        method: "GET",
-        url: urlD + "save-order",
-        data: { userId : userId },
-        success: function(respuesta) {
-
-            if( respuesta.estado ) {
-                actualizarPedidoWeb(respuesta.data);
-            } else {
-                bootbox.alert('Se presento un error. POr favor, inténtelo nuevamente.');
-                $('.bnt-send-units').prop('disabled', false);
-            }
-            
-        },
-        error: function() {
-            bootbox.alert('Se produjo un error. Por favor, inténtelo nuevamente.');
-        }
-    });    
-}
-
-/**
  * Funcion para validar el pedido y confirmarlo o mostrar 
  * información de los items con stock menor al solicitado
  */
@@ -383,12 +356,12 @@ function confirmarPedido() {
 
     $.ajax({
         method: "GET",
-        url: urlC + "validate-order",
+        url: urlC + "pedido/validarorden",
         data: { userId : userId },
         success: function(respuesta) {
 
             if( respuesta.estado ) {
-                procesarPedidoDatax();
+                actualizarPedidoWeb();
             } else if( !respuesta.estado && respuesta.data != null) {
                 modalUnidadesDisponibles(respuesta);
             } else {
@@ -414,13 +387,13 @@ function actualizarUnidadesPedidasExistencia() {
 
     $.ajax({
         method: "GET",
-        url: urlC + "update-units-order",
+        url: urlC + "pedido/actualizarunidades",
         data: { userId : userId },
         success: function(respuesta) {
 
             bootbox.alert(respuesta.mensaje, function() {
                 $('#formCheckOrder').modal('hide');
-                procesarPedidoDatax();
+                actualizarPedidoWeb();
             })
             
         },

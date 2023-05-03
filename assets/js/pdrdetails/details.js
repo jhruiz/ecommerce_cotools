@@ -1,9 +1,11 @@
-var urlImg = 'https://admin.cotools.co/dist/img/';
-var urlC = 'https://cotoolsback.cotools.co/public/';
-var urlEC = 'https://cotools.co/';
-// var urlImg = 'http://localhost:85/dist/img/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
-// var urlEC = 'http://localhost:85/ecommerce_cotools/';
+// var urlImg = 'https://admin.cotools.co/dist/img/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+// var urlEC = 'https://cotools.co/';
+var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
+var urlEC = 'http://localhost:85/ecommerce_cotools/';
+var valDefecto = 'precio3';
+var ivaIncDefecto = 'ivaincp3';
 
 /**
  * Valida que el campo sea numérico
@@ -47,7 +49,7 @@ var zoomImagen = function(idImg){
  * Obtiene el precio del producto en la lista 3
  * @returns 
  */
- var precioProductoLista3 = function(precio) {
+ var precioProductoLista = function(precio) {
     var valorProducto = "";
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -233,31 +235,28 @@ var agregarInformacionItemPpal = function(detalles) {
 
     // Valida el precio del producto basado en la lista a la cual pertenece el cliente
     var valNoList = '';
-    if(localStorage.getItem('cod_benf') != null ) {
-        if( localStorage.getItem('lista_benf') == '1' ) {
-            var valor = detalles.precio1;
-            var ivaInc = detalles.iva_inc_p1;
-            valNoList = precioProductoLista3(detalles.precio3);
-        } else if( localStorage.getItem('lista_benf') == '2' ) {
-            var valor = detalles.precio2;
-            var ivaInc = detalles.iva_inc_p2;
-            valNoList = precioProductoLista3(detalles.precio3);
-        } else {
-            var valor = detalles.precio3;
-            var ivaInc = detalles.iva_inc_p3;
+    if(localStorage.getItem('id') != null ) {
+
+        var listaPrecio = 'precio' + localStorage.getItem('lista_benf');
+        var valIvaInc = 'ivaincp' + localStorage.getItem('lista_benf');
+        var valor = detalles[listaPrecio];
+        var ivaInc = detalles[valIvaInc];            
+
+        if( valDefecto != listaPrecio) {
+            valNoList = precioProductoLista(detalles.precio3);
         }
 
     } else {
-        var valor = detalles.precio3;
-        var ivaInc = detalles.iva_inc_p3;
-    }
+        var valor = detalles[valDefecto];
+        var ivaInc = detalles[ivaIncDefecto];
+    }  
         
     // Nombre del producto
-    $('#tituloPpal').html(detalles.descrip);
+    $('#tituloPpal').html(detalles.descripcion);
 
-    $('#codItem').html('Código ' + detalles.cod_item);
+    $('#codItem').html('Código ' + detalles.codigo);
     $('#referencia').html('Referencia ' + detalles.referencia);
-    $('#unidadFactor').html('Unidades por empaque ' + detalles.uni_factor);
+    $('#unidadFactor').html('Unidades por empaque ' + detalles.unidad_factor);
 
     if(valNoList != "") {
         $('#delPrice').html(valNoList);
@@ -267,13 +266,13 @@ var agregarInformacionItemPpal = function(detalles) {
     $('#precioPpal').html(formatearNumero(valor, ivaInc));
 
     // Descripcion extendida del producto
-    $('#descripcionPpal').html(detalles.itm_extens);
+    $('#descripcionPpal').html(detalles.desc_extensa);
 
     // Se agrega la cantidad del producto por defecto
-    $('#uniFactor').val(detalles.uni_factor);
-    $('#uniFactorHid').val(detalles.uni_factor);
-    $('#codHid').val(detalles.cod_item);
-    $('#descHid').val(detalles.descrip + '<br> Ref. ' + detalles.referencia);
+    $('#uniFactor').val(detalles.unidad_factor);
+    $('#uniFactorHid').val(detalles.unidad_factor);
+    $('#codHid').val(detalles.codigo);
+    $('#descHid').val(detalles.descripcion + '<br> Ref. ' + detalles.referencia);
     
 }
 
@@ -293,50 +292,51 @@ var agregarItemsPorGrupo = function(grupo) {
     var gruposHtml = "";
 
     grupo.forEach( element => {
+        var imagenes = [];
+        var urlImagen = new Object();
+        urlImagen.url = element.url_imagen;
+        imagenes['0'] = urlImagen;
 
         // Se obtiene la imagen principal si existe
-        var img = obtenerImagenProducto(element.imagenes);
+        var img = obtenerImagenProducto(imagenes);
         
         // Valida el precio del producto basado en la lista a la cual pertenece el cliente
         var valNoList = '';
-        if(localStorage.getItem('cod_benf') != null ) {
-            if( localStorage.getItem('lista_benf') == '1' ) {
-                var valor = element.precio1;
-                var ivaInc = element.iva_inc_p1;
-                valNoList = precioProductoLista3(element.precio3);
-            } else if( localStorage.getItem('lista_benf') == '2' ) {
-                var valor = element.precio2;
-                var ivaInc = element.iva_inc_p2;
-                valNoList = precioProductoLista3(element.precio3);
-            } else {
-                var valor = element.precio3;
-                var ivaInc = element.iva_inc_p3;
+        if(localStorage.getItem('id') != null ) {
+
+            var listaPrecio = 'precio' + localStorage.getItem('lista_benf');
+            var valIvaInc = 'ivaincp' + localStorage.getItem('lista_benf');
+            var valor = element[listaPrecio];
+            var ivaInc = element[valIvaInc];            
+
+            if( valDefecto != listaPrecio) {
+                valNoList = precioProductoLista(element.precio3);
             }
 
         } else {
-            var valor = element.precio3;
-            var ivaInc = element.iva_inc_p3;
+            var valor = element[valDefecto];
+            var ivaInc = element[ivaIncDefecto];
         }
 
         // Formatea la descripcion extensa del producto
-        var descExt = obtenerNombreProducto(element.itm_extens, 21);        
+        var descExt = obtenerNombreProducto(element.desc_extensa, 21);        
 
         // Se obtiene el valor de venta del producto formateado
         var valPdr = obtenerPrecioProducto(valor, ivaInc);
 
-        var codRef = '<br><p>Cod ' + element.cod_item + '. Ref ' + element.referencia +  '</p>';
+        var codRef = '<br><p>Cod ' + element.codigo + '. Ref ' + element.referencia +  '</p>';
 
         // Se crea el html de los productos relacionados por grupo
         gruposHtml += '<div class="col-md-3">';
         gruposHtml += '<div class="product-item">';
-        gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descrip + '" width="215" height="170"></a>';
-        gruposHtml += '<div class="down-content">';
-        gruposHtml += '<a href="#" data-idProd="' + element.cod_item + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descrip + '">' + element.descrip +codRef + '</h4></a>';
-        gruposHtml += '<input type="hidden" id="title_' + element.cod_item + '" value="' + element.descrip + '">';
+        gruposHtml += '<a href="#" data-idProd="' + element.item_id + '" onclick="redirectItemDetail(this)"><img src="' + img + '" alt="" title="' + element.descripcion + '" width="215" height="170"></a>';
+        gruposHtml += '<div class="down-content" style=" height: 220px !important;">';
+        gruposHtml += '<a href="#" data-idProd="' + element.item_id + '" onclick="redirectItemDetail(this)"><h4 title="' + element.descripcion + '">' + element.descripcion + codRef + '</h4></a>';
+        gruposHtml += '<input type="hidden" id="title_' + element.item_id + '" value="' + element.descripcion + '">';
         gruposHtml += valNoList + '<h6>' + valPdr + '</h6>';
-        gruposHtml += '<p title="' + element.itm_extens + '">' + descExt + '</p>';
-        gruposHtml += '<div class="text-right"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.cod_item + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarritoDesdeGrupo(this)"></i></div>';
+        gruposHtml += '<p title="' + element.desc_extensa + '">' + descExt + '</p>';
         gruposHtml += '</div>';
+        gruposHtml += '<div class="text-right" style="margin:10px;"><i class="fa fa-shopping-cart fa-lg text-secondary" id="carritoCompras_' + element.item_id + '" title="Agregar al carrito" onmouseleave="leaveCar(this)" onmouseover="overCar(this)" onclick="agregarAlCarritoDesdeGrupo(this)"></i></div>';
         gruposHtml += '</div>';
         gruposHtml += '</div>';
     })
@@ -354,7 +354,7 @@ var agregarItemsPorLinea = function(linea) {
     linea.forEach( element => {
 
         // Se obtiene la imagen principal si existe
-        var img = obtenerImagenProducto(element.imagenes);
+        var img = obtenerImagenProducto(imagenes);
 
         // Se obtiene la descripcion del producto formateada para un tamaño adecuado
         var descripcion = obtenerNombreProducto(element.descrip);
@@ -400,23 +400,23 @@ var formatearNumero = function(precioVenta, ivaInc) {
  * General el html con la información del detalle del producto
  * @param {*} data 
  */
-var generarVistaDetalladaItem = function(data) {
+var generarVistaDetalladaItem = function(data, grupo, imagenes) {
 
     // Se agrega la imagen principal
-    agregarImagenPrincipal(data.data.principal.imagenes);
+    agregarImagenPrincipal(imagenes);
 
     // Se agregan las imagenes secundarias
-    if( data.data.principal.imagenes != null ){
-        agregarImagenesSecundarias(data.data.principal.imagenes);
+    if( imagenes != null ){
+        agregarImagenesSecundarias(imagenes);
     } else {
         $('#sec_images').html('');
     }
      
     // Se agrega información detallada del producto
-    agregarInformacionItemPpal(data.data.principal);
+    agregarInformacionItemPpal(data['0']);
 
     // Se agrega la informacion de los items por grupo
-    agregarItemsPorGrupo(data.data.grupo);
+    agregarItemsPorGrupo(grupo);
 
     // // Se agrega la información de los items por linea
     // agregarItemsPorLinea(data.data.linea);
@@ -430,17 +430,17 @@ var obtenerInfoDetalladaProducto = function() {
     var id = sessionStorage.getItem('idProd');
 
     if( id == null) {
-        alert('Debe seleccionar un producto');
+        bootbox.alert('Debe seleccionar un producto');
         window.location.href = urlEC + "index.html";
     } else {
         //se obtienen los productos
         $.ajax({
             method: "GET",
-            url: urlC + "get-item-detail",
+            url: urlC + "item/obtener",
             data: { idItem: id },
             success: function(respuesta) {
                 if ( respuesta.estado ) {
-                    generarVistaDetalladaItem(respuesta.data);
+                    generarVistaDetalladaItem(respuesta.data, respuesta.grupo, respuesta.imagenes);
                 } else {
                     bootbox.alert('no fue posible obtener el producto.')                
                 }                

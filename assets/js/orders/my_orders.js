@@ -1,8 +1,9 @@
-var urlC = 'https://cotoolsback.cotools.co/public/';
-var urlImg = 'https://admin.cotools.co/dist/img/';
-var urlGuide = 'https://admin.cotools.co/docs/assets/guides/';
-// var urlImg = 'http://localhost:85/dist/img/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+// var urlImg = 'https://admin.cotools.co/dist/img/';
+// var urlGuide = 'https://admin.cotools.co/docs/assets/guides/';
+var urlGuide = 'http://localhost:85/cotoolsadmfront/docs/assets/guides/';
+var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
 estadosPedido = {};
 
 // Constante para formatear numeros
@@ -51,17 +52,18 @@ var generarTimeLine = function( estadoActual ) {
  */
 var resumenPedido = function(respuesta) {
 
+    var numeroPedido = generarNumeroPedido( respuesta.data['0'] );
     var htmlDetPed = "";
     $('#subtittle-pedido-ok').html('<span>Resumen del pedido.</span>');
 
     htmlDetPed += '<tr>';
     htmlDetPed += '<th class="text-right">Número del pedido</th>';
-    htmlDetPed += '<td class="text-right">' + respuesta.data['0'].nro_pdweb + '</td>';
+    htmlDetPed += '<td class="text-right">' + numeroPedido + '</td>';
     htmlDetPed += '</tr>';
 
     htmlDetPed += '<tr>';
     htmlDetPed += '<th class="text-right">Fecha del pedido</th>';
-    htmlDetPed += '<td class="text-right">' + respuesta.data['0'].fechaPedido + '</td>';
+    htmlDetPed += '<td class="text-right">' + respuesta.data['0'].fechapedido + '</td>';
     htmlDetPed += '</tr>';
 
     htmlDetPed += '<tr>';
@@ -101,10 +103,10 @@ var detallePedido = function(data) {
     data.forEach(element => {
 
         htmlDetPed += '<tr>';
-        htmlDetPed += '<td scope="row">' + element.descripcion +'</td>';
+        htmlDetPed += '<td scope="row">' + element.desc_item +'</td>';
         htmlDetPed += '<td class="text-right">' + element.cantidad + '</input>';
-        htmlDetPed += '<td class="text-right">' + formatearNumero(element.precioventaunit) + '</td>';
-        htmlDetPed += '<td class="text-center">' + element.tasaiva + '% </td>';
+        htmlDetPed += '<td class="text-right">' + formatearNumero(element.vlr_item) + '</td>';
+        htmlDetPed += '<td class="text-center">' + element.vlr_impuesto + '% </td>';
         htmlDetPed += '<td class="text-right">' + formatearNumero(element.baseTtal) + '</td>';
         htmlDetPed += '</tr>';
     });
@@ -162,13 +164,14 @@ var generarDetallePedido = function( data ) {
  * @param {*} data 
  */
 function verDetallePedido(data) {
+    
     $('#num_pedido').html('#' + $('#' + data.id).data('numero'));
     var pedId = data.id.replace('ped_', '');
     
     //se obtiene el detalle de un pedido específico
     $.ajax({
         method: "GET",
-        url: urlC + "get-order-details",
+        url: urlC + "pedidodetalle/obtenerdetalle",
         data: { pedidoId: pedId },
         success: function(respuesta) {
             if ( respuesta.estado ) {
@@ -188,13 +191,16 @@ function verDetallePedido(data) {
  * @param {*} data 
  */
 var generarVistaPedidosCliente = function( data ) {
+
     var htmlDetPed = "";
     data.forEach(element => {
+        var numeroPedido = generarNumeroPedido( element );
+
         htmlDetPed += '<tr>';
-        htmlDetPed += '<td>' + element.nro_pdweb + '</td>';
+        htmlDetPed += '<td>' + numeroPedido + '</td>';
         htmlDetPed += '<td>' + element.descripcion + '</td>';
         htmlDetPed += '<td>' + element.updated_at.substring(0,10) + '</td>';
-        htmlDetPed += '<td><i class="fa fa-eye" id="ped_' + element.id + '" data-numero="' + element.nro_pdweb + '" title="Ver detalle" onclick="verDetallePedido(this)"></i></td>';
+        htmlDetPed += '<td><i class="fa fa-eye" id="ped_' + element.id + '" data-numero="' + numeroPedido + '" title="Ver detalle" onclick="verDetallePedido(this)"></i></td>';
         htmlDetPed += '</tr>';        
     });
     
@@ -210,7 +216,7 @@ var obtenerPedidosCliente = function() {
     //se obtienen los productos
     $.ajax({
         method: "GET",
-        url: urlC + "get-orders-client",
+        url: urlC + "pedido/obtenerpedidocliente",
         data: { userId: userId },
         success: function(respuesta) {
             if ( respuesta.estado ) {
@@ -231,7 +237,7 @@ var obtenerPedidosCliente = function() {
 var obtenerEstadosPedido = function() {
     $.ajax({
         method: "GET",
-        url: urlC + "get-status-order",
+        url: urlC + "estadopedidos/obtener",
         data: { userId: userId },
         success: function(respuesta) {
             estadosPedido = respuesta.data;              

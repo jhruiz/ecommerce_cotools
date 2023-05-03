@@ -1,8 +1,9 @@
-var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlC = 'http://localhost:85/cotoolsback/public/';
+// var urlC = 'https://cotoolsback.cotools.co/public/';
+var urlC = 'http://localhost:85/cotoolsback/public/';
 
 function suscribirse() {
-    window.open('https://admin.cotools.co/pages/usuarios/externos.html', '_blank');
+    //window.open('https://admin.cotools.co/pages/usuarios/externos.html', '_blank');
+    window.open('http://localhost:85/cotoolsadmfront/pages/usuarios/externos.html', '_blank');
 }
 
 /**
@@ -42,10 +43,9 @@ function loginUser() {
     if(validarLogin(user, password)) {
         $.ajax({
             method: "GET",
-            url: urlC + "login-user",
+            url: urlC + "usuario/login",
             data: { user: user, password: password },
             success: function(respuesta) {
-
                 if( respuesta.estado ) {
                     if( respuesta.data['0'].estado_id == '3' ) {
 
@@ -59,11 +59,12 @@ function loginUser() {
                         localStorage.setItem('email', respuesta.data['0'].email);
                         localStorage.setItem('estado', respuesta.data['0'].estado_id);
                         localStorage.setItem('id', respuesta.data['0'].id);
-                        localStorage.setItem('cod_benf', respuesta.dataDatax['0'].cod_benf);
-                        localStorage.setItem('lista_benf', respuesta.dataDatax['0'].lista_benf);
-                        localStorage.setItem('lugar_benf', respuesta.dataDatax['0'].lugar_benf);
-                        localStorage.setItem('nom_benf', respuesta.dataDatax['0'].nom_benf);
-                        localStorage.setItem('telef_benf', respuesta.dataDatax['0'].telef_benf);
+                        localStorage.setItem('nit', respuesta.data['0'].nit);
+                        localStorage.setItem('lista_benf', respuesta.data['0'].listaprecio);
+                        localStorage.setItem('nom_benf', respuesta.data['0'].primer_nombre+' '+respuesta.data['0'].segundo_nombre+' '+respuesta.data['0'].primer_apellido+' '+respuesta.data['0'].segundo_apellido);
+                        localStorage.setItem('telef_benf', respuesta.data['0'].celular);
+                        localStorage.setItem('direccion', respuesta.data['0'].direccion);
+                        localStorage.setItem('ciudad', respuesta.datac.descripcion);
 
                         window.location.href = 'index.html';
                     }
@@ -86,7 +87,7 @@ function loginUser() {
  * Valida el estado de login del cliente
  */
 var validarEstadoLogin = function() {
-    var cliente = localStorage.getItem('cod_benf');
+    var cliente = localStorage.getItem('id');
     
     if(cliente != null) {
         $('#form-login').html('');
@@ -100,7 +101,7 @@ var validarEstadoLogin = function() {
         nlHtml += '</div>';
         nlHtml += '<div class="col-lg-12">';
         nlHtml += '<fieldset>';
-        nlHtml += '<a href="#" class="btn btn-primary" onclick="logoutUser()">Logout</a>';
+        nlHtml += '<a href="#" class="btn btn-primary" onclick="logoutUser()">Salir</a>';
         nlHtml += '</fieldset>';
         nlHtml += '</div>';
         $('#form-login').html(nlHtml);    
