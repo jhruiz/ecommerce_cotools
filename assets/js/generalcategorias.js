@@ -1,7 +1,7 @@
 // var urlC = 'https://cotoolsback.cotools.co/public/';
 // var urlEC = 'https://cotools.co/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
-var urlEC = 'http://localhost:85/ecommerce_cotools/';
+var urlC = 'https://torqueracing.com.co/public/';
+var urlEC = 'http://localhost:85/ecommerce/';
 /**
  * Obtiene la categoria seleccionada y redirecciona a la pagina de grupos de datax
  */
@@ -10,7 +10,7 @@ var urlEC = 'http://localhost:85/ecommerce_cotools/';
     var textCat = $('#' + data.id).data('name');
     sessionStorage.setItem('categoriaId', categoria);
     sessionStorage.setItem('categoriaName', textCat);
-    window.location.href = urlEC + "list-groups.html";
+    window.location.href = urlEC + "list-groups.php";
 }
 
 /**

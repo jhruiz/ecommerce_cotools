@@ -2,8 +2,8 @@
 // var urlImg = 'https://admin.cotools.co/dist/img/';
 // var urlEC = 'https://cotools.co/';
 var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
-var urlEC = 'http://localhost:85/ecommerce_cotools/';
+var urlC = 'https://torqueracing.com.co/public/';
+var urlEC = 'http://localhost:85/ecommerce/';
 var valDefecto = 'precio3';
 var ivaIncDefecto = 'ivaincp3';
 
@@ -13,7 +13,7 @@ var ivaIncDefecto = 'ivaincp3';
  */
  var redirectItemDetail = function(data) {
     sessionStorage.setItem('idProd', $(data).data('idprod'));
-    window.location.href = urlEC + "product-details.html";
+    window.location.href = urlEC + "product-details.php";
 }
 
 /**

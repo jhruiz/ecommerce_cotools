@@ -2,8 +2,8 @@
 // var urlC = 'https://cotoolsback.cotools.co/public/';
 // var urlEC = 'https://cotools.co/';
 var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
-var urlEC = 'http://localhost:85/ecommerce_cotools/';
+var urlC = 'https://torqueracing.com.co/public/';
+var urlEC = 'http://localhost:85/ecommerce/';
 var valDefecto = 'precio3';
 var ivaIncDefecto = 'ivaincp3';
 
@@ -74,7 +74,7 @@ var zoomImagen = function(idImg){
  var redirectItemDetail = function(data) {
 
     sessionStorage.setItem('idProd', $(data).data('idprod'));
-    window.location.href = urlEC + "product-details.html";
+    window.location.href = urlEC + "product-details.php";
 }
 
 /**
@@ -431,7 +431,7 @@ var obtenerInfoDetalladaProducto = function() {
 
     if( id == null) {
         bootbox.alert('Debe seleccionar un producto');
-        window.location.href = urlEC + "index.html";
+        window.location.href = urlEC + "index";
     } else {
         //se obtienen los productos
         $.ajax({

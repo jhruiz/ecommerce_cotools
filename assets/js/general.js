@@ -1,3 +1,6 @@
+var urlC = 'https://torqueracing.com.co/public/';
+var urlEC = 'http://localhost:85/ecommerce/';
+
 var mostrarTexto1Banner = function() {
     var spanWidth = $('#text_1_banner span').width();
     $('#text_1_banner').animate( { width: spanWidth }, 4000);
@@ -63,6 +66,35 @@ var obtenerItems = function() {
     numPedido = data.id.toString() + data.usuario_id.toString() + arrDate['1'].replaceAll(':', '');
 
     return numPedido;
+}
+
+/**
+ * Obtiene los artículos en el carrito y redirecciona a la página de checkout
+ */
+var goToShopping = function() {
+
+    var userId = localStorage.getItem('id');
+
+    // valida si existe un usuario logueado
+    if( userId != null ) {
+        $.ajax({
+            method: "GET",
+            url: urlC + "pedido/detallepedido",
+            data: { userId : userId },
+            success: function(respuesta) {
+                if( respuesta.estado ) {                    
+                    $.redirect("checkout.php", respuesta.data, "POST", "");               
+                } else if( respuesta.mensaje != "" ){
+                    bootbox.alert( respuesta.mensaje );
+                } else {
+                    bootbox.alert( 'No fue posible obtener los artículos del carrito de compras.' );
+                }
+            },
+            error: function() {
+                bootbox.alert('Se produjo un error. Por favor, inténtelo nuevamente.');
+            }
+        });             
+    }
 }
 
 $( document ).ready(function() {   

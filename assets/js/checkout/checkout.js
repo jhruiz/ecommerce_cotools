@@ -2,7 +2,7 @@
 // var urlC = 'https://cotoolsback.cotools.co/public/';
 // var urlD = 'https://dataxback.cotools.co/public/';
 var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
+var urlC = 'https://torqueracing.com.co/public/';
 var urlD = 'http://localhost:85/dataxback/';
 
 /**
@@ -26,7 +26,8 @@ var cambiarCantidadItem = function(data) {
             success: function(respuesta) {
     
                 if( respuesta.estado ) {
-                    obtenerInformacionPedido();               
+                    goToShopping();
+                    // obtenerInformacionPedido();               
                 } else {
                     bootbox.alert(respuesta.mensaje);
                 }
@@ -45,6 +46,15 @@ var cambiarCantidadItem = function(data) {
  * @param {*} respuesta 
  */
 var resumenPedido = function(respuesta) {
+
+    // se elimina el div de mercado pago
+    $('#wallet_container').remove();
+
+    // se elimina el botón para editar información de contacto
+    $('#editClient').remove();
+
+    // Actualiza la cantidad de items en el menú principal
+    $('#cntItems').html('0');
     
     // genera el número de pedido que mostrará al cliente
     var numPedido = generarNumeroPedido(respuesta.data['0']);
@@ -59,9 +69,9 @@ var resumenPedido = function(respuesta) {
 
     var htmlDetPed = "";
 
-    $('#tittle-pedido-ok').html('<h4>Su pedido se registró exitósamente.</h4><br>');
+    $('#tittle-pedido-ok').html('<h4>Su pedido se encuentra pendiente por validación de pago.</h4><br>');
     $('#subtittle-pedido-ok').html('<span>Gracias por elegirnos. A continuación encontrará el resumen del pedido.</span><br>');
-    $('#email-pedido-ok').html('<span>En su bandeja de correo encontrará un mensaje con el detalle de su compra.</span>');
+    $('#email-pedido-ok').html('<span>En su bandeja de correo encontrará un mensaje con el detalle de su pedido.</span>');
     
     htmlDetPed += '<tr>';
     htmlDetPed += '<th class="text-right">Número del pedido</th>';
@@ -74,7 +84,7 @@ var resumenPedido = function(respuesta) {
     htmlDetPed += '</tr>';
 
     htmlDetPed += '<tr>';
-    htmlDetPed += '<th class="text-right">Valor a cancelar</th>';
+    htmlDetPed += '<th class="text-right">Valor del pedido</th>';
     htmlDetPed += '<td class="text-right">' + formatearNumero(respuesta.total) + '</td>';
     htmlDetPed += '</tr>';
 
@@ -135,10 +145,11 @@ var eliminarItemPedido = function(idItem, idPed) {
 
             if( respuesta.estado ) {
                 $('#tr_' + idItem).fadeOut("normal", function() {
-                    $(this).remove();
+                    // $(this).remove();
                     eliminarItemMenu();
                 });      
-                obtenerInformacionPedido();               
+                goToShopping();
+                // obtenerInformacionPedido();               
             } else {
                 bootbox.alert(respuesta.mensaje);
             }
@@ -323,18 +334,21 @@ var actualizarPedidoWeb = function() {
     //se obtiene la información del cliente para registrar el pedido en datax
     var userId = localStorage.getItem('id');
 
+    //id de pago de mercadopago
+    var mpId = $('#preference_id').val();
+
     $.ajax({
         method: "GET",
         url: urlC + "pedido/aprobarpedido",
-        data: { userId : userId },
+        data: { userId : userId, mpId : mpId },
         success: function(respuesta) {
 
             if( respuesta.estado ) {
-                bootbox.alert('El pedido fue confirmado de manera exitosa.', function(){
+                // bootbox.alert('Su pedido se encuentra pendiente de aprobación hasta confirmar pago.', function(){
                     resumenPedido(respuesta);
-                });
+                // });
             } else {
-                bootbox.alert('Se presento un error. POr favor, inténtelo nuevamente.');
+                bootbox.alert('Se presento un error. Por favor, inténtelo nuevamente.');
             }
             
         },
@@ -352,7 +366,7 @@ function confirmarPedido() {
     $(".btn-confirm").prop('disabled', true);
 
     //se obtiene la información del cliente para validar el pedido
-    var userId = localStorage.getItem('id');
+    var userId = localStorage.getItem('id');    
 
     $.ajax({
         method: "GET",
@@ -403,8 +417,41 @@ function actualizarUnidadesPedidasExistencia() {
     });
 }
 
+/**
+ * Funcion para metodo de pago de mercado pago
+ */
+var mercadopago = function(){
+    var preferenceId = $('#preference_id').val();
+
+    // const mp = new MercadoPago('TEST-dad4f35d-9ae4-406b-86ba-8897cae91543', {
+    const mp = new MercadoPago('APP_USR-38d4da16-ed19-48f0-bcec-32de02a3212a', {
+        locale: 'es-CO'
+      });
+    const bricksBuilder = mp.bricks();
+
+    mp.bricks().create("wallet", "wallet_container", {
+    initialization: {
+        preferenceId: preferenceId,
+        redirectMode: "modal"
+    },
+    customization: {
+        checkout: {
+            theme: {
+                elementsColor: "#4287F5",
+                headerColor: "#4287F5",
+            },
+        },
+    },    
+    callbacks: {
+        onSubmit: () => confirmarPedido(),
+        onError: (error) => console.log(error),
+      },    
+    });
+}
+
 $( document ).ready(function() {
     obtenerInformacionPedido();
+    mercadopago();
 
     // se deshabilita el boton de confirmar pedido
     $(".btn-confirm").prop('disabled', true);

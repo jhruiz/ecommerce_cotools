@@ -1,5 +1,5 @@
 // var urlC = 'https://cotoolsback.cotools.co/public/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
+var urlC = 'https://torqueracing.com.co/public/';
 
 function suscribirse() {
     //window.open('https://admin.cotools.co/pages/usuarios/externos.html', '_blank');
@@ -66,7 +66,7 @@ function loginUser() {
                         localStorage.setItem('direccion', respuesta.data['0'].direccion);
                         localStorage.setItem('ciudad', respuesta.datac.descripcion);
 
-                        window.location.href = 'index.html';
+                        window.location.href = 'index.php';
                     }
                 } else {
                     bootbox.alert(respuesta.mensaje);

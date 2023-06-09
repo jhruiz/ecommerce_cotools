@@ -3,7 +3,7 @@
 // var urlGuide = 'https://admin.cotools.co/docs/assets/guides/';
 var urlGuide = 'http://localhost:85/cotoolsadmfront/docs/assets/guides/';
 var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'http://localhost:85/cotoolsback/public/';
+var urlC = 'https://torqueracing.com.co/public/';
 estadosPedido = {};
 
 // Constante para formatear numeros
@@ -22,23 +22,34 @@ var formatearNumero = function(numero) {
     return formatter.format(numero).toString();    
 }
 
-var generarTimeLine = function( estadoActual ) {
+var generarTimeLine = function( estadoActual, mostrar ) {
+
     var htmlTimeLine = "";
 
     htmlTimeLine += '<ul class="timeline" id="timeline">';
 
-    estadosPedido.forEach( element => {
-        
-        var complete = element.id <= estadoActual ? 'complete' : '';
-        var txtSuc = element.id <= estadoActual ? 'text-success' : '';
+    /** Si se debe mostrar el time line, se recorre y se crea, de lo contrario, se muestra el pago rechazado */
+    if( mostrar ) {
+        estadosPedido.forEach( element => {
+            
+            var complete = element.orden <= estadoActual ? 'complete' : '';
+            var txtSuc = element.orden <= estadoActual ? 'text-success' : '';
 
-        htmlTimeLine += '<li class="li ' + complete + '">';
+            htmlTimeLine += '<li class="li ' + complete + '">';
+            htmlTimeLine += '<div class="status">';
+            htmlTimeLine += '<div class="ped-icon"><i class="' + element.fontawesome + ' ' + txtSuc + '"></i></div>';
+            htmlTimeLine += '<span class="txt-tml"> ' + element.descripcion + ' </span>';
+            htmlTimeLine += '</div>';
+            htmlTimeLine += '</li>';
+        });
+    } else {
+        htmlTimeLine += '<li class="li complete">';
         htmlTimeLine += '<div class="status">';
-        htmlTimeLine += '<div class="ped-icon"><i class="' + element.fontawesome + ' ' + txtSuc + '"></i></div>';
-        htmlTimeLine += '<span class="txt-tml"> ' + element.descripcion + ' </span>';
+        htmlTimeLine += '<div class="ped-icon"><i class="fa fa-ban text-success"></i></div>';
+        htmlTimeLine += '<span class="txt-tml"> PAGO RECHAZADO </span>';
         htmlTimeLine += '</div>';
         htmlTimeLine += '</li>';
-    });
+    }
 
     htmlTimeLine += '</ul>'; 
 
@@ -145,9 +156,8 @@ var detallePago = function(ttles) {
  * @param {*} data 
  */
 var generarDetallePedido = function( data ) {
-
     // genera el time line del pedido seleccionado
-    generarTimeLine(data.data['0'].estadoId);
+    generarTimeLine(data.data['0'].ordenpedido, data.data['0'].mostrar);
 
     // genera la información del resumen del pedido
     resumenPedido(data);
