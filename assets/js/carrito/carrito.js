@@ -1,6 +1,3 @@
-// var urlC = 'https://cotoolsback.cotools.co/public/';
-var urlC = 'https://torqueracing.com.co/public/';
-
 /**
  * Valida si hay un usuario logueado
  */
