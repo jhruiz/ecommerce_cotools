@@ -1,3 +1,5 @@
+// var urlC = 'http://localhost:85/cotoolsback/';
+// var urlEC = 'http://localhost:85/ecommerce_cotools/';
 var urlC = 'https://torqueracing.com.co/public/';
 var urlEC = 'https://vendeconmiggo.com/';
 var urlImg = 'https://sellers.miggo.com.co/dist/img/'

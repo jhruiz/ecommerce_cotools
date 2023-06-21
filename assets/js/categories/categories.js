@@ -6,7 +6,6 @@ var ivaIncDefecto = 'ivaincp3';
  * @param {*} id 
  */
  var redirectItemDetail = function(data) {
-    alert(urlEC);
     sessionStorage.setItem('idProd', $(data).data('idprod'));
     window.location.href = urlEC + "product-details.php";
 }
