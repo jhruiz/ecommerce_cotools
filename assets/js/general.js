@@ -2,8 +2,8 @@
 // var urlEC = 'http://localhost:85/ecommerce_cotools/';
 var urlC = 'https://vendeconmiggoback.vendeconmiggo.com/public/';
 var urlEC = 'https://vendeconmiggo.com/';
-var urlImg = 'https://sellers.miggo.com.co/dist/img/'
-var urlGuide = 'https://sellers.miggo.com.co/docs/assets/guides'
+var urlImg = 'https://vendeconmiggoadmin.vendeconmiggo.com/dist/img/'
+var urlGuide = 'https://vendeconmiggoadmin.vendeconmiggo.com/docs/assets/guides'
 
 var mostrarTexto1Banner = function() {
     var spanWidth = $('#text_1_banner span').width();
