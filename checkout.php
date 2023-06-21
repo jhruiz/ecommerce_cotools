@@ -278,12 +278,13 @@
       $preference = new MercadoPago\Preference();
 
       $preference->back_urls=array(
-        "success" => "http://localhost:85/ecommerce/success.php",
-        "failure" => "http://localhost:85/ecommerce/failure.php",
-        "pending" => "http://localhost:85/ecommerce/pending.php"
+        "success" => "https://vendeconmiggo.com/success.php",
+        "failure" => "https://vendeconmiggo.com/failure.php",
+        "pending" => "https://vendeconmiggo.com/pending.php"
       );
 
-      $preference->notification_url='https://torqueracing.com.co/public/notifications/' . $_POST['0']['pedido_id'];
+      $preference->notification_url='https://torqueracing.com.co/public/notifications?source_news=webhooks';
+      // $preference->notification_url='https://torqueracing.com.co/public/notifications/' . $_POST['0']['pedido_id'];
       $preference->auto_return='approved';
 
       // Crea un ítem en la preferencia
@@ -302,7 +303,6 @@
 
       $preference->items = $productos;
       $preference->save();    
-    
     
     ?>
     <!-- Se obtiene el preference id, necesario para la pasarela de pagos -->

@@ -1,7 +1,3 @@
-// var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlEC = 'https://cotools.co/';
-var urlC = 'https://torqueracing.com.co/public/';
-var urlEC = 'http://localhost:85/ecommerce/';
 /**
  * Obtiene la categoria seleccionada y redirecciona a la pagina de grupos de datax
  */

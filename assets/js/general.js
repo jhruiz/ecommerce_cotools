@@ -1,7 +1,5 @@
 var urlC = 'https://torqueracing.com.co/public/';
-var urlEC = 'http://localhost:85/ecommerce/';
-// var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/'
-// var urlGuide = 'http://localhost:85/cotoolsadmfront/docs/assets/guides/';
+var urlEC = 'https://vendeconmiggo.com/';
 var urlImg = 'https://sellers.miggo.com.co/dist/img/'
 var urlGuide = 'https://sellers.miggo.com.co/docs/assets/guides'
 

@@ -1,9 +1,3 @@
-// var urlImg = 'https://admin.cotools.co/dist/img/';
-// var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlEC = 'https://cotools.co/';
-// var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'https://torqueracing.com.co/public/';
-var urlEC = 'http://localhost:85/ecommerce/';
 var valDefecto = 'precio3';
 var ivaIncDefecto = 'ivaincp3';
 

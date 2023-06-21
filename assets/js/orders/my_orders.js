@@ -1,9 +1,3 @@
-// var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlImg = 'https://admin.cotools.co/dist/img/';
-// var urlGuide = 'https://admin.cotools.co/docs/assets/guides/';
-// var urlGuide = 'http://localhost:85/cotoolsadmfront/docs/assets/guides/';
-// var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'https://torqueracing.com.co/public/';
 estadosPedido = {};
 
 // Constante para formatear numeros

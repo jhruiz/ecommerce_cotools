@@ -1,9 +1,3 @@
-// var urlC = 'https://cotoolsback.cotools.co/public/';
-// var urlImg = 'https://admin.cotools.co/dist/img/';
-// var urlEC = 'https://cotools.co/';
-//var urlImg = 'http://localhost:85/cotoolsadmfront/dist/img/';
-var urlC = 'https://torqueracing.com.co/public/';
-var urlEC = 'http://localhost:85/ecommerce/';
 var valDefecto = 'precio3';
 var ivaIncDefecto = 'ivaincp3';
 
@@ -12,6 +6,7 @@ var ivaIncDefecto = 'ivaincp3';
  * @param {*} id 
  */
  var redirectItemDetail = function(data) {
+    alert(urlEC);
     sessionStorage.setItem('idProd', $(data).data('idprod'));
     window.location.href = urlEC + "product-details.php";
 }
